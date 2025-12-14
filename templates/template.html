@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Weather</title>
+        <link rel="stylesheet" href="../static/css/style.css" />
+    </head>
+    <body>
+        <div class="weather-container">
+            <div class="current-weather">
+                <div class="current-left">
+                    <img
+                        class="current-icon"
+                        src="../static/icons/{{CURRENT_ICON}}"
+                        alt="Weather Icon"
+                    />
+                    <div class="temp-main">
+                        <span class="temp">{{TEMP}}°C</span>
+                    </div>
+                    <div class="temps">
+                        <span class="description">{{DESC}}</span><br />
+                        <span class="feels">Feels {{FEELS}}°</span><br />
+                        <span class="high">H {{HIGH}}° </span>
+                        <span class="low">L {{LOW}}°</span>
+                    </div>
+                </div>
+
+                <div class="current-right">
+                    <span class="day-name">{{DAY}}</span><br />
+                    <span class="location">Calgary</span>
+                </div>
+            </div>
+            <div class="daily-forecast">
+                <img
+                    class="chart"
+                    src="../static/graphs/hourly_forecast_12.png"
+                />
+            </div>
+            <div class="time details">{{TIME}}</div>
+        </div>
+    </body>
+</html>
