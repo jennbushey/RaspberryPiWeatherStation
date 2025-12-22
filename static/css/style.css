@@ -1,16 +1,61 @@
+/* =========================
+   Base & Variables
+   ========================= */
+
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial,
         sans-serif;
     margin: 0;
-    padding: 20px;
-    height: 480px;
+    padding: 12px;
     width: 800px;
+    height: 480px;
+
+    background: var(--bg);
+    color: var(--text);
 }
+
+:root {
+    --font-sm: 10px;
+    --font-md: 16px;
+    --font-lg: 24px;
+    --font-xl: 32px;
+    --font-hero: 72px;
+}
+
+/* =========================
+   Day / Night Modes
+   Toggle via: <body class="day"> or <body class="night">
+   ========================= */
+
+body.day {
+    --bg: #fbfbf8;
+    --card-bg: rgb(255, 255, 255);
+    --text: #1b1b1b;
+    --muted: #8b97a3;
+    --accent: #cfae70; /* Warm sun tone */
+}
+
+body.night {
+    --bg: rgb(8, 11, 16);
+    --card-bg: rgb(0, 0, 0);
+    --text: #eaeaea;
+    --muted: #8b97a3;
+    --accent: #7aa2c6; /* Moonlight blue */
+}
+
+/* =========================
+   Main Container
+   ========================= */
 
 .weather-container {
     padding: 10px;
-    border-radius: 16px;
+    border-radius: 8px;
+    background: var(--bg);
 }
+
+/* =========================
+   Current Weather Layout
+   ========================= */
 
 .current-weather {
     display: flex;
@@ -20,68 +65,135 @@ body {
 
 .current-left {
     display: flex;
-    justify-content: space-between;
+    text-align: left;
     align-items: center;
-    gap: 15px;
-    flex-basis: 6%;
 }
 
 .current-right {
     text-align: right;
-    flex-basis: 30%;
+    max-width: 30%;
 }
 
+/* =========================
+   Weather Icon (Inky Safe)
+   ========================= */
+
 .current-icon {
-    width: 150px;
-    height: 150px;
-    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
+    width: 140px;
+    height: 140px;
+    image-rendering: crisp-edges;
+    filter: drop-shadow(1px 0 0 #000) drop-shadow(0 1px 0 #000);
 }
+
+/* =========================
+   Temperature Block
+   ========================= */
 
 .temp-main {
     display: flex;
     flex-direction: column;
+    padding-right: 24px;
+    text-align: left;
 }
 
 .temp {
-    font-size: 64px;
-    font-weight: 400;
+    font-size: var(--font-hero);
+    font-weight: 600;
+    line-height: 1;
 }
 
-.description {
-    font-size: 32px;
+.feels {
+    font-size: var(--font-md);
     font-weight: 500;
-    margin-top: 5px;
+    color: var(--muted);
 }
 
-.time {
-    text-align: right;
-    font-size: 12px;
-    color: #666;
-    margin-top: 8px;
+/* =========================
+   Text Elements
+   ========================= */
+
+.location {
+    font-size: var(--font-xl);
+    font-weight: 600;
+    margin: 0;
 }
 
 .day-name {
-    font-size: 32px;
-    font-weight: 500;
+    font-size: var(--font-xl);
+    font-weight: 600;
 }
 
-.location {
-    font-size: x-large;
-    margin: 0;
-    font-weight: 500;
+.description {
+    font-size: var(--font-lg);
+    font-weight: 600;
+    margin-top: 6px;
 }
 
-.details {
-    font-size: 14px;
-    color: #666;
+.time {
+    font-size: var(--font-sm);
+    font-weight: 500;
+    color: var(--muted);
+    margin-top: 6px;
 }
+
+/* =========================
+   Chart Container
+   ========================= */
 
 .chart {
-    margin-top: 10px;
-    border-radius: 12px;
-    flex-basis: 100%;
+    margin-top: 12px;
+    padding: 8px;
+    /* border: 2px solid var(--accent); */
+    border-radius: 6px;
 }
+
+/* =========================
+   Daily Forecast
+   ========================= */
 
 .daily-forecast {
     display: flex;
+    justify-content: space-between;
+    margin-top: 12px;
+}
+
+.day-icon {
+    width: 64px;
+    height: 64px;
+    image-rendering: crisp-edges;
+    filter: drop-shadow(1px 0 0 #000) drop-shadow(0 1px 0 #000);
+}
+
+.temps {
+    margin-top: 4px;
+}
+
+.dow {
+    font-weight: 600;
+}
+
+.high {
+    font-weight: 600;
+}
+
+.low {
+    color: var(--muted);
+}
+
+.week-forecast {
+    display: flex;
+    width: 100%;
+    text-align: center;
+    padding: 0%;
+}
+
+.day-card {
+    flex: 1;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    margin-left: 6px;
+    margin-right: 6px;
 }

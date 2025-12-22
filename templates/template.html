@@ -5,7 +5,7 @@
         <title>Weather</title>
         <link rel="stylesheet" href="../static/css/style.css" />
     </head>
-    <body>
+    <body class="{{MODE}}">
         <div class="weather-container">
             <div class="current-weather">
                 <div class="current-left">
@@ -21,7 +21,8 @@
                         <span class="description">{{DESC}}</span><br />
                         <span class="feels">Feels {{FEELS}}°</span><br />
                         <span class="high">H {{HIGH}}° </span>
-                        <span class="low">L {{LOW}}°</span>
+                        <span class="low">L {{LOW}}°</span><br />
+                        <span class="time">{{TIME}}</span>
                     </div>
                 </div>
 
@@ -36,7 +37,7 @@
                     src="../static/graphs/hourly_forecast_12.png"
                 />
             </div>
-            <div class="time details">{{TIME}}</div>
+            <div class="week-forecast">{{WEEK_CARDS}}</div>
         </div>
     </body>
 </html>

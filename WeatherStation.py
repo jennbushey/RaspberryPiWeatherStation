@@ -3,7 +3,7 @@
 # ===============================
 import subprocess
 from zoneinfo import ZoneInfo
-from datetime import datetime
+from datetime import datetime, timedelta
 import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
 import requests
@@ -46,7 +46,13 @@ with open("./data/wmo_code.json") as f:
 # ===============================
 # 4. Plot hourly graph
 # ===============================
-def plot_hourly_graph(data, now):
+
+def plot_hourly_graph(data, now, is_day):
+    import matplotlib.dates as mdates
+    import matplotlib.pyplot as plt
+    import pandas as pd
+    from datetime import datetime
+    from zoneinfo import ZoneInfo
 
     hourly_temps = (
         pd.Series(data["hourly"]["temperature_2m"])
@@ -63,49 +69,85 @@ def plot_hourly_graph(data, now):
     ]
 
     df = pd.DataFrame(
-        {"time": times, "hourly_temps": hourly_temps}
-    ).set_index("time")
+        {"time": times, "hourly_temps": hourly_temps}).set_index("time")
 
     current_hour = now.replace(minute=0, second=0, microsecond=0)
-
-    df = df.loc[
-        current_hour: current_hour + pd.Timedelta(hours=12)
-    ]
-
+    df = df.loc[current_hour: current_hour + pd.Timedelta(hours=12)]
     df.index = df.index.tz_localize(None)
 
-    plt.figure(figsize=(7.8, 3))
-    plt.plot(df.index, df["hourly_temps"])
-    plt.fill_between(df.index, df["hourly_temps"], alpha=0.5)
+    # =========================
+    # Colors based on day/night
+    # =========================
+    if is_day == "day":
+        line_color = "#1b1b1b"   # Soft black (less harsh than pure black)
+        fill_color = "#cfae70"   # Warm sun tone
+        text_color = "#1b1b1b"
+        bg_color = "#fbfbf8"   # Warm off-white
+    else:
+        line_color = "#eaeaea"   # Soft white
+        fill_color = "#7aa2c6"   # Cool moonlight blue
+        text_color = "#eaeaea"
+        bg_color = "#080b10"   # Deep cool night
 
-    plt.gca().xaxis.set_major_formatter(
-        mdates.DateFormatter("%H")
-    )
+    font_size = 16
+    plt.figure(figsize=(7.8, 3), facecolor=bg_color)
+    ax = plt.gca()
+    ax.set_facecolor(bg_color)
 
-    y_min = int(df["hourly_temps"].min() // 5 * 5)
-    y_max = int(df["hourly_temps"].max() // 5 * 5 + 5)
-    plt.yticks(np.arange(y_min, y_max + 1, 5))
-    plt.yticks([])
+    # Plot line and fill
+    x = df.index
+    y = df["hourly_temps"]
 
-    for x, y in zip(df.index, df["hourly_temps"]):
+    padding = 1.5  # degrees of breathing room
+    y_min = y.min() - padding
+    y_max = y.max() + padding
+
+    plt.plot(x, y, color=line_color, linewidth=2)
+    plt.fill_between(x, y, alpha=0.25, color=fill_color)
+
+    ax.xaxis.set_major_locator(mdates.HourLocator(interval=2))
+    ax.xaxis.set_major_formatter(mdates.DateFormatter("%-I %p"))
+
+    plt.ylim(y_min, y_max)
+
+    # Annotate each point
+    prev = None
+    for xi, yi in zip(x, y):
+        alpha = 0 if yi == prev else 1.0
+        prev = yi
         plt.annotate(
-            f"{y}",
-            (x, y),
+            f"{yi}°",
+            (xi, yi),
             textcoords="offset points",
-            xytext=(0, 10),
+            xytext=(0, 12),
             ha="center",
-            fontsize=16,
+            fontsize=font_size,
+            color=text_color,
+            alpha=alpha,
         )
 
-    plt.xticks(fontsize=16)
-    plt.grid(axis="y", linestyle="--", alpha=0.5)
+    plt.xticks(fontsize=font_size, color=text_color)
+    ax.tick_params(axis="y", which="both", left=False, labelleft=False)
+    plt.grid(axis="y", linestyle="--", alpha=0.5, color=text_color)
 
-    for spine in plt.gca().spines.values():
+    # Make the line/fill touch the left/right edges of the plotting area
+    ax.set_xlim(x.min(), x.max())
+    ax.margins(x=0)
+
+    # Put x tick labels "outside" by reserving bottom space manually
+    # (replace tight_layout with subplots_adjust)
+    plt.subplots_adjust(left=0.04, right=0.96, top=0.98, bottom=0.28)
+
+    # Push tick labels further down (outside the plot area)
+    ax.tick_params(axis="x", pad=18, colors=text_color,
+                   bottom=False, labelsize=font_size)
+
+    for spine in ax.spines.values():
         spine.set_visible(False)
 
-    plt.tight_layout()
+    # plt.tight_layout()
     plt.savefig(GRAPH_PATH, transparent=True)
-    plt.close()  # IMPORTANT for headless / Pi
+    plt.close()
 
 
 # ===============================
@@ -142,22 +184,54 @@ def get_weather():
             "temperature_2m_max",
             "temperature_2m_min",
             "precipitation_probability_max",
+            "weather_code",
         ],
     }
 
     r = requests.get(url, params=params, timeout=10)
     data = r.json()
+    # print(data)
 
     local_tz = ZoneInfo(TZ)
     now = datetime.now(local_tz)
-
-    plot_hourly_graph(data, now)
 
     is_day = "day" if data["current"]["is_day"] else "night"
     code = str(data["current"]["weather_code"])
 
     day_str = now.strftime("%A %B %d")
     time_str = now.strftime("%-I:%M %p").lower()
+
+    plot_hourly_graph(data, now, is_day)
+
+    week = []
+    for i in range(1, 7):  # next 7 days (tomorrow..7 days out)
+        dt = now + timedelta(days=i)
+
+        week.append({
+            "DOW": dt.strftime("%a"),  # Mon, Tue...
+            "HIGH": round(data["daily"]["temperature_2m_max"][i]),
+            "LOW": round(data["daily"]["temperature_2m_min"][i]),
+            "ICON": WMO_CODE[str(data["daily"]["weather_code"][i])]["day"]["icon"],
+        })
+
+    def build_week_cards_html(week):
+        parts = []
+        for d in week:
+            parts.append(
+                f"""
+                <div class="day-card">
+                <div class="dow">{d["DOW"]}</div>
+                <img class="day-icon" src="../static/icons/{d["ICON"]}" alt="" />
+                <div class="temps">
+                    <span class="high">{d["HIGH"]}°</span>
+                    <span class="low">{d["LOW"]}°</span>
+                </div>
+                </div>
+                """.strip()
+            )
+        return "\n".join(parts)
+
+    week_cards_html = build_week_cards_html(week)
 
     return {
         "TEMP": round(data["current"]["temperature_2m"]),
@@ -171,6 +245,8 @@ def get_weather():
         "DAY": day_str,
         "HIGH": round(data["daily"]["temperature_2m_max"][0]),
         "LOW": round(data["daily"]["temperature_2m_min"][0]),
+        "MODE": is_day,
+        "WEEK_CARDS": week_cards_html,
     }
 
 
