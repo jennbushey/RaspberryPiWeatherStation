@@ -68,12 +68,12 @@ def plot_hourly_graph(data, now, is_day):
     # =========================
     if is_day == "day":
         line_color = "#1b1b1b"   # Soft black (less harsh than pure black)
-        fill_color = "#d39e3d"   # Warm sun tone
-        text_color = "#1b1b1b"
+        fill_color = "orange"   # Warm sun tone
+        text_color = "grey"
         bg_color = "#fbfbf8"   # Warm off-white
     else:
         line_color = "#eaeaea"   # Soft white
-        fill_color = "#7aa2c6"   # Cool moonlight blue
+        fill_color = "blue"   # Cool moonlight blue
         text_color = "#eaeaea"
         bg_color = "#080b10"   # Deep cool night
 
