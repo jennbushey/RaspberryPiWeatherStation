@@ -11,13 +11,14 @@ import json
 import pandas as pd
 import numpy as np
 import matplotlib
+import os
 
 matplotlib.use("Agg")  # non-interactive backend (important for Pi)
 
 
 # Optional Pi-only imports
 try:
-    from PIL import Image
+    from PIL import Image, ImageDraw
     from inky.auto import auto
 except ImportError:
     Image = None
@@ -264,13 +265,14 @@ def render_html(weather):
     with open(OUTPUT_PATH, "w") as f:
         f.write(html)
 
-    print("Saved output.html")
+    # print("Saved output.html")
 
 
 # ===============================
 # 7. Screenshot (Pi only)
 # ===============================
 def make_screenshot():
+    path = os.path.abspath(OUTPUT_PATH)
     subprocess.run(
         [
             "chromium-browser",
@@ -303,5 +305,5 @@ def show_on_inky():
 if __name__ == "__main__":
     weather = get_weather()
     render_html(weather)
-    # make_screenshot()
-    # show_on_inky()
+    make_screenshot()
+    show_on_inky()
