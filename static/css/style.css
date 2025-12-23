@@ -12,6 +12,7 @@ body {
     width: 800px;
     height: 480px;
     overflow: hidden;
+    font-weight: 600;
 
     background: var(--bg);
     color: var(--text);
@@ -34,16 +35,16 @@ body.day {
     --bg: #fbfbf8;
     --card-bg: rgb(255, 255, 255);
     --text: #1b1b1b;
-    --muted: #8b97a3;
-    --accent: #cfae70; /* Warm sun tone */
+    --muted: #5f646b;
+    --accent: #8f6b2c;
 }
 
 body.night {
     --bg: rgb(8, 11, 16);
     --card-bg: rgb(0, 0, 0);
     --text: #eaeaea;
-    --muted: #8b97a3;
-    --accent: #7aa2c6; /* Moonlight blue */
+    --muted: #9aa3ad;
+    --accent: #4f6f8f; /* Moonlight blue */
 }
 
 /* =========================
@@ -105,13 +106,11 @@ Current Weather Layout
 
 .temp {
     font-size: var(--font-hero);
-    font-weight: 600;
     line-height: 1;
 }
 
 .feels {
     font-size: var(--font-md);
-    font-weight: 500;
     color: var(--muted);
 }
 
@@ -121,24 +120,20 @@ Current Weather Layout
 
 .location {
     font-size: var(--font-xl);
-    font-weight: 600;
     margin: 0;
 }
 
 .day-name {
     font-size: var(--font-xl);
-    font-weight: 600;
 }
 
 .description {
     font-size: var(--font-lg);
-    font-weight: 600;
     margin-top: 6px;
 }
 
 .time {
     font-size: var(--font-sm);
-    font-weight: 500;
     color: var(--muted);
     margin-top: 6px;
 }
@@ -151,6 +146,7 @@ Current Weather Layout
     border-radius: 6px;
     margin-left: 6px;
     margin-right: 6px;
+    margin-bottom: 6px;
 }
 
 /* =========================

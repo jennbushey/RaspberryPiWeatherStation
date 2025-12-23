@@ -90,7 +90,7 @@ def plot_hourly_graph(data, now, is_day):
         text_color = "#eaeaea"
         bg_color = "#080b10"   # Deep cool night
 
-    font_size = 10
+    font_size = 12
     plt.figure(figsize=(7.8, 2.0), dpi=100, facecolor=bg_color)
     ax = plt.gca()
     ax.set_facecolor(bg_color)
@@ -124,12 +124,16 @@ def plot_hourly_graph(data, now, is_day):
             xytext=(0, 6),
             ha="center",
             fontsize=font_size,
+            fontweight="bold",
             color=text_color,
             alpha=alpha,
         )
 
     plt.xticks(fontsize=font_size, color=text_color)
     ax.tick_params(axis="y", which="both", left=False, labelleft=False)
+    for label in ax.get_xticklabels():
+        label.set_fontweight("bold")
+
     plt.grid(axis="y", linestyle="dotted", alpha=0.5, color=text_color)
     # Make the line/fill touch the left/right edges of the plotting area
     ax.set_xlim(x.min(), x.max())
