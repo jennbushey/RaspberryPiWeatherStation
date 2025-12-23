@@ -190,7 +190,6 @@ def get_weather():
     }
 
     r = requests.get(url, params=params, timeout=10)
-    r.raise_for_status()
     data = r.json()
 
     if "current" not in data or "hourly" not in data:
