@@ -54,6 +54,8 @@ Main Container
     padding: 0px;
     border-radius: 8px;
     background: var(--bg);
+    margin-left: 24px;
+    margin-right: 24px;
 }
 
 /* =========================
@@ -76,7 +78,6 @@ Current Weather Layout
 .current-right {
     text-align: right;
     max-width: 30%;
-    margin-right: 18px;
 }
 
 /* =========================
@@ -87,7 +88,7 @@ Current Weather Layout
     width: 140px;
     height: 140px;
     image-rendering: crisp-edges;
-    filter: drop-shadow(1px 0 0 #7d7f7c) drop-shadow(0 1px 0 #7d7f7c);
+    filter: drop-shadow(1px 0 0 #2c4049) drop-shadow(0 1px 0 #2c4049);
 }
 
 /* =========================
@@ -161,8 +162,8 @@ Current Weather Layout
     width: 64px;
     height: 64px;
     image-rendering: crisp-edges;
-    filter: drop-shadow(1px 0 0 #7d7f7c) drop-shadow(-1px 0 0 #7d7f7c)
-        drop-shadow(0 1px 0 #7d7f7c) drop-shadow(0 -1px 0 #7d7f7c);
+    filter: drop-shadow(1px 0 0 #2c4049) drop-shadow(-1px 0 0 #2c4049)
+        drop-shadow(0 1px 0 #2c4049) drop-shadow(0 -1px 0 #2c4049);
 }
 
 .temps {
