@@ -305,12 +305,6 @@ def make_screenshot():
             "--width", "800",
             "--height", "480",
             "--quality", "100",
-            "--format", "png",
-
-            "--margin-top", "0",
-            "--margin-right", "0",
-            "--margin-bottom", "0",
-            "--margin-left", "0",
 
             "--crop-w", "800",
             "--crop-h", "480",
