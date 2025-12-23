@@ -277,16 +277,35 @@ def render_html(weather):
 # 7. Screenshot (Pi only)
 # ===============================
 
+# def make_screenshot():
+#     html_path = OUTPUT_PATH.resolve()
+#     subprocess.run(
+#         [
+#             "chromium-browser",
+#             "--headless",
+#             "--disable-gpu",
+#             "--window-size=800,480",
+#             f"--screenshot={SCREENSHOT_PATH}",
+#             f"file://{html_path}",
+#         ],
+#         check=True,
+#     )
+
+
 def make_screenshot():
     html_path = OUTPUT_PATH.resolve()
+    screenshot_path = SCREENSHOT_PATH.resolve()
+
     subprocess.run(
         [
-            "chromium-browser",
-            "--headless",
-            "--disable-gpu",
-            "--window-size=800,480",
-            f"--screenshot={SCREENSHOT_PATH}",
+            "wkhtmltoimage",
+            "--width", "800",
+            "--height", "480",
+            "--disable-smart-width",
+            "--quality", "100",
+            "--format", "png",
             f"file://{html_path}",
+            str(screenshot_path),
         ],
         check=True,
     )
