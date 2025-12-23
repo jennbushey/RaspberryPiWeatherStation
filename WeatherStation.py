@@ -326,15 +326,14 @@ def show_on_inky():
     if auto is None or Image is None:
         return
 
-    display = auto()
-    w, h = display.resolution
-
     img = Image.open(SCREENSHOT_PATH).convert("RGB")
-    if img.size != (w, h):
-        img = img.resize((w, h), Image.Resampling.LANCZOS)
 
-    display.set_image(img)
-    display.show()
+    # Crop center 800x480 from 825x480
+    left = (img.width - 800) // 2  # (825-800)//2 = 12
+    img = img.crop((left, 0, left + 800, 480))
+
+    inky_display.set_image(img)
+    inky_display.show()
 
 
 # ===============================
