@@ -19,8 +19,8 @@ body {
 }
 
 :root {
-    --font-sm: 10px;
-    --font-md: 16px;
+    --font-sm: 12px;
+    --font-md: 18px;
     --font-lg: 24px;
     --font-xl: 32px;
     --font-hero: 72px;
@@ -172,11 +172,11 @@ Current Weather Layout
 }
 
 .dow {
-    font-weight: 600;
+    font-size: var(--font-md);
 }
 
 .high {
-    font-weight: 600;
+    font-size: var(--font-md);
 }
 
 .low {

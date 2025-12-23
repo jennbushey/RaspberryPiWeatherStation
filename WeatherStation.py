@@ -121,7 +121,7 @@ def plot_hourly_graph(data, now, is_day):
     for label in ax.get_xticklabels():
         label.set_fontweight("bold")
 
-    plt.grid(axis="y", linestyle="dotted", alpha=0.5, color=text_color)
+    plt.grid(axis="y", linestyle="", alpha=0.5, color=text_color)
     # Make the line/fill touch the left/right edges of the plotting area
     ax.set_xlim(x.min(), x.max())
     ax.margins(x=0)
