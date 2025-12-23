@@ -9,23 +9,10 @@ import matplotlib.pyplot as plt
 import requests
 import json
 import pandas as pd
-import numpy as np
 import matplotlib
-import os
 from pathlib import Path
 
-
 matplotlib.use("Agg")  # non-interactive backend (important for Pi)
-
-
-# Optional Pi-only imports
-try:
-    from PIL import Image, ImageDraw
-    from inky.auto import auto
-except ImportError:
-    Image = None
-    auto = None
-
 
 # ===============================
 # 2. Constants / Config
@@ -332,14 +319,13 @@ def make_screenshot():
 # 8. Display on Inky (Pi only)
 # ===============================
 def show_on_inky():
-    if auto is None or Image is None:
-        return
+    from PIL import Image
+    from inky.auto import auto
+
+    inky = auto()
 
     img = Image.open(SCREENSHOT_PATH).convert("RGB")
-
-    # Crop center 800x480 from 825x480
-    left = (img.width - 800) // 2  # (825-800)//2 = 12
-    img = img.crop((left, 0, left + 800, 480))
+    img = img.resize((inky.WIDTH, inky.HEIGHT))
 
     inky.set_image(img)
     inky.show()
