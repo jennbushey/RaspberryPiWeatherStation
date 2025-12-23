@@ -292,17 +292,26 @@ def render_html(weather):
 
 
 def make_screenshot():
-    html_path = OUTPUT_PATH.resolve()
-    screenshot_path = SCREENSHOT_PATH.resolve()
+    html_path = Path(OUTPUT_PATH).resolve()
+    screenshot_path = Path(SCREENSHOT_PATH).resolve()
+
+    # Helpful: base dir where your /static folder lives
+    base_dir = html_path.parent.resolve()
 
     subprocess.run(
         [
             "wkhtmltoimage",
             "--width", "800",
             "--height", "480",
-            "--disable-smart-width",
             "--quality", "100",
             "--format", "png",
+
+            # this fixes “Blocked access to file …”
+            "--enable-local-file-access",
+
+            # Make relative paths (./static/...) resolve
+            "--allow", str(base_dir),
+
             f"file://{html_path}",
             str(screenshot_path),
         ],
