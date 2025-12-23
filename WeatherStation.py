@@ -341,8 +341,8 @@ def show_on_inky():
     left = (img.width - 800) // 2  # (825-800)//2 = 12
     img = img.crop((left, 0, left + 800, 480))
 
-    inky_display.set_image(img)
-    inky_display.show()
+    inky.set_image(img)
+    inky.show()
 
 
 # ===============================
