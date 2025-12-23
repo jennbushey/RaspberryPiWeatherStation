@@ -69,7 +69,7 @@ def plot_hourly_graph(data, now, is_day):
     if is_day == "day":
         line_color = "#1b1b1b"   # Soft black (less harsh than pure black)
         fill_color = "orange"   # Warm sun tone
-        text_color = "grey"
+        text_color = "dark grey"
         bg_color = "#fbfbf8"   # Warm off-white
     else:
         line_color = "#eaeaea"   # Soft white
@@ -91,7 +91,7 @@ def plot_hourly_graph(data, now, is_day):
     y_min = y.min() - 0.15 * y_range
     y_max = y.max() + 0.30 * y_range
 
-    plt.plot(x, y, color=line_color, linewidth=1)
+    plt.plot(x, y, color=line_color, linewidth=1.5)
     plt.fill_between(x, y, alpha=0.25, color=fill_color)
 
     ax.xaxis.set_major_locator(mdates.HourLocator(interval=2))
@@ -220,8 +220,8 @@ def get_weather():
                 <div class="dow">{d["DOW"]}</div>
                 <img class="day-icon" src="../static/icons/{d["ICON"]}" alt="" />
                 <div class="temps">
-                    <span class="high">{d["HIGH"]}°</span>
-                    <span class="low">{d["LOW"]}°</span>
+                    <span class="high">H {d["HIGH"]}°</span>
+                    <span class="low">L {d["LOW"]}°</span>
                 </div>
                 </div>
                 """.strip()
