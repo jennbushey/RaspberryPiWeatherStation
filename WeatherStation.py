@@ -12,6 +12,8 @@ import pandas as pd
 import numpy as np
 import matplotlib
 import os
+from pathlib import Path
+
 
 matplotlib.use("Agg")  # non-interactive backend (important for Pi)
 
@@ -32,10 +34,13 @@ LAT = 51.0501
 LON = -114.0853
 TZ = "America/Denver"
 
-GRAPH_PATH = "./static/graphs/hourly_forecast_12.png"
-TEMPLATE_PATH = "./templates/template.html"
-OUTPUT_PATH = "./templates/output.html"
 
+BASE_DIR = Path(__file__).resolve().parent
+GRAPH_PATH = BASE_DIR / "static/graphs/hourly_forecast_12.png"
+TEMPLATE_PATH = BASE_DIR / "templates/template.html"
+OUTPUT_PATH = BASE_DIR / "templates/output.html"
+SCREENSHOT_PATH = BASE_DIR / "screen.png"
+WMO_PATH = BASE_DIR / "data/wmo_code.json"
 
 # ===============================
 # 3. Load static data once
@@ -49,11 +54,6 @@ with open("./data/wmo_code.json") as f:
 # ===============================
 
 def plot_hourly_graph(data, now, is_day):
-    import matplotlib.dates as mdates
-    import matplotlib.pyplot as plt
-    import pandas as pd
-    from datetime import datetime
-    from zoneinfo import ZoneInfo
 
     hourly_temps = (
         pd.Series(data["hourly"]["temperature_2m"])
@@ -190,7 +190,12 @@ def get_weather():
     }
 
     r = requests.get(url, params=params, timeout=10)
+    r.raise_for_status()
     data = r.json()
+
+    if "current" not in data or "hourly" not in data:
+        raise RuntimeError(f"Unexpected API response: {data.keys()}")
+
     # print(data)
 
     local_tz = ZoneInfo(TZ)
@@ -205,7 +210,7 @@ def get_weather():
     plot_hourly_graph(data, now, is_day)
 
     week = []
-    for i in range(1, 7):  # next 7 days (tomorrow..7 days out)
+    for i in range(1, 7):  # next 6 days (tomorrow..6 days out)
         dt = now + timedelta(days=i)
 
         week.append({
@@ -271,16 +276,17 @@ def render_html(weather):
 # ===============================
 # 7. Screenshot (Pi only)
 # ===============================
+
 def make_screenshot():
-    path = os.path.abspath(OUTPUT_PATH)
+    html_path = OUTPUT_PATH.resolve()
     subprocess.run(
         [
             "chromium-browser",
             "--headless",
             "--disable-gpu",
             "--window-size=800,480",
-            "--screenshot=screen.png",
-            OUTPUT_PATH,
+            f"--screenshot={SCREENSHOT_PATH}",
+            f"file://{html_path}",
         ],
         check=True,
     )
@@ -294,7 +300,12 @@ def show_on_inky():
         return
 
     display = auto()
-    img = Image.open("screen.png")
+    w, h = display.resolution
+
+    img = Image.open(SCREENSHOT_PATH).convert("RGB")
+    if img.size != (w, h):
+        img = img.resize((w, h), Image.Resampling.LANCZOS)
+
     display.set_image(img)
     display.show()
 
@@ -303,7 +314,16 @@ def show_on_inky():
 # 9. Main
 # ===============================
 if __name__ == "__main__":
-    weather = get_weather()
-    render_html(weather)
+    print("Fetching weather...")
+    data = get_weather()
+
+    print("Rendering HTML...")
+    render_html(data)
+
+    print("Taking screenshot...")
     make_screenshot()
+
+    print("Showing on Inky...")
     show_on_inky()
+
+    print("Done.")
