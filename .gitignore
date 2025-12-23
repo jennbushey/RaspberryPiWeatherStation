@@ -3,6 +3,7 @@ screen.png
 templates/output.html 
 static/graphs/*.png
 !static/graphs/.gitkeep
+rebuild.md
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

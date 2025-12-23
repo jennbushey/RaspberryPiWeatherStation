@@ -1,19 +1,15 @@
 /* =========================
    Base & Variables
    ========================= */
-@page {
-    margin: 0;
-}
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial,
         sans-serif;
-    margin: 0;
+    margin: 12px;
     padding: 0;
     width: 800px;
     height: 480px;
     overflow: hidden;
     font-weight: 600;
-
     background: var(--bg);
     color: var(--text);
 }
@@ -27,29 +23,29 @@ body {
 }
 
 /* =========================
-   Day / Night Modes
-   Toggle via: <body class="day"> or <body class="night">
-   ========================= */
+Day / Night Modes
+Toggle via: <body class="day"> or <body class="night">
+========================= */
 
 body.day {
     --bg: #fbfbf8;
     --card-bg: rgb(255, 255, 255);
     --text: #1b1b1b;
-    --muted: #5f646b;
-    --accent: #8f6b2c;
+    --muted: red;
+    --accent: red;
 }
 
 body.night {
     --bg: rgb(8, 11, 16);
     --card-bg: rgb(0, 0, 0);
     --text: #eaeaea;
-    --muted: #9aa3ad;
-    --accent: #4f6f8f; /* Moonlight blue */
+    --muted: blue;
+    --accent: green; /* Moonlight blue */
 }
 
 /* =========================
-   Main Container
-   ========================= */
+Main Container
+========================= */
 
 .weather-container {
     height: 480px;
@@ -164,7 +160,9 @@ Current Weather Layout
     width: 64px;
     height: 64px;
     image-rendering: crisp-edges;
-    filter: drop-shadow(1px 0 0 #000) drop-shadow(0 1px 0 #000);
+    filter: drop-shadow(1px 0 0 var(--accent))
+        drop-shadow(-1px 0 0 var(--accent)) drop-shadow(0 1px 0 var(--accent))
+        drop-shadow(0 -1px 0 var(--accent));
 }
 
 .temps {
