@@ -1,14 +1,17 @@
 /* =========================
    Base & Variables
    ========================= */
-
+@page {
+    margin: 0;
+}
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial,
         sans-serif;
     margin: 0;
-    padding: 0px;
+    padding: 0;
     width: 800px;
     height: 480px;
+    overflow: hidden;
 
     background: var(--bg);
     color: var(--text);
@@ -48,19 +51,23 @@ body.night {
    ========================= */
 
 .weather-container {
-    padding: 10px;
+    height: 480px;
+    display: flex;
+    flex-direction: column;
+    padding: 0px;
     border-radius: 8px;
     background: var(--bg);
 }
 
 /* =========================
-   Current Weather Layout
-   ========================= */
+Current Weather Layout
+========================= */
 
 .current-weather {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+    height: 120px;
 }
 
 .current-left {
@@ -141,10 +148,9 @@ body.night {
    ========================= */
 
 .chart {
-    margin-top: 12px;
-    padding: 8px;
-    /* border: 2px solid var(--accent); */
     border-radius: 6px;
+    margin-left: 6px;
+    margin-right: 6px;
 }
 
 /* =========================
@@ -153,8 +159,9 @@ body.night {
 
 .daily-forecast {
     display: flex;
-    justify-content: space-between;
-    margin-top: 12px;
+    justify-content: center;
+    margin-top: 0;
+    height: 210px;
 }
 
 .day-icon {
@@ -184,7 +191,7 @@ body.night {
     display: flex;
     width: 100%;
     text-align: center;
-    padding: 0%;
+    margin-top: 6px;
 }
 
 .day-card {
@@ -194,6 +201,6 @@ body.night {
     flex-direction: column;
     background-color: var(--card-bg);
     border-radius: 12px;
-    margin-left: 6px;
-    margin-right: 6px;
+    margin: 6px;
+    height: 110px;
 }

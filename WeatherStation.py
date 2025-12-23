@@ -90,8 +90,8 @@ def plot_hourly_graph(data, now, is_day):
         text_color = "#eaeaea"
         bg_color = "#080b10"   # Deep cool night
 
-    font_size = 16
-    plt.figure(figsize=(7.8, 3), facecolor=bg_color)
+    font_size = 10
+    plt.figure(figsize=(7.8, 2.0), dpi=100, facecolor=bg_color)
     ax = plt.gca()
     ax.set_facecolor(bg_color)
 
@@ -99,9 +99,10 @@ def plot_hourly_graph(data, now, is_day):
     x = df.index
     y = df["hourly_temps"]
 
-    padding = 1.5  # degrees of breathing room
-    y_min = y.min() - padding
-    y_max = y.max() + padding
+    y_range = y.max() - y.min()
+
+    y_min = y.min() - 0.15 * y_range
+    y_max = y.max() + 0.30 * y_range
 
     plt.plot(x, y, color=line_color, linewidth=2)
     plt.fill_between(x, y, alpha=0.25, color=fill_color)
@@ -120,7 +121,7 @@ def plot_hourly_graph(data, now, is_day):
             f"{yi}°",
             (xi, yi),
             textcoords="offset points",
-            xytext=(0, 12),
+            xytext=(0, 6),
             ha="center",
             fontsize=font_size,
             color=text_color,
@@ -129,25 +130,25 @@ def plot_hourly_graph(data, now, is_day):
 
     plt.xticks(fontsize=font_size, color=text_color)
     ax.tick_params(axis="y", which="both", left=False, labelleft=False)
-    plt.grid(axis="y", linestyle="--", alpha=0.5, color=text_color)
-
+    plt.grid(axis="y", linestyle="dotted", alpha=0.5, color=text_color)
     # Make the line/fill touch the left/right edges of the plotting area
     ax.set_xlim(x.min(), x.max())
     ax.margins(x=0)
 
     # Put x tick labels "outside" by reserving bottom space manually
     # (replace tight_layout with subplots_adjust)
-    plt.subplots_adjust(left=0.04, right=0.96, top=0.98, bottom=0.28)
+    plt.subplots_adjust(left=0.04, right=0.96, top=0.95, bottom=0.15)
 
     # Push tick labels further down (outside the plot area)
-    ax.tick_params(axis="x", pad=18, colors=text_color,
+    ax.tick_params(axis="x", pad=0, colors=text_color,
                    bottom=False, labelsize=font_size)
 
     for spine in ax.spines.values():
         spine.set_visible(False)
 
     # plt.tight_layout()
-    plt.savefig(GRAPH_PATH, transparent=True)
+    plt.savefig(GRAPH_PATH, transparent=True,
+                bbox_inches="tight", pad_inches=0)
     plt.close()
 
 
@@ -305,6 +306,16 @@ def make_screenshot():
             "--height", "480",
             "--quality", "100",
             "--format", "png",
+
+            "--margin-top", "0",
+            "--margin-right", "0",
+            "--margin-bottom", "0",
+            "--margin-left", "0",
+
+            "--crop-w", "800",
+            "--crop-h", "480",
+            "--crop-x", "0",
+            "--crop-y", "0",
 
             # this fixes “Blocked access to file …”
             "--enable-local-file-access",
