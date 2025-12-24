@@ -51,11 +51,10 @@ Main Container
     height: 480px;
     display: flex;
     flex-direction: column;
-    padding: 0px;
     border-radius: 8px;
     background: var(--bg);
-    margin-left: 24px;
-    margin-right: 24px;
+    padding-left: 0px;
+    padding-right: 24px;
 }
 
 /* =========================
@@ -162,8 +161,8 @@ Current Weather Layout
 }
 
 .day-icon {
-    width: 64px;
-    height: 64px;
+    width: 72px;
+    height: 72px;
     image-rendering: crisp-edges;
     filter: drop-shadow(1px 0 0 var(--accent))
         drop-shadow(-1px 0 0 var(--accent)) drop-shadow(0 1px 0 var(--accent))
@@ -200,6 +199,6 @@ Current Weather Layout
     flex-direction: column;
     background-color: var(--card-bg);
     border-radius: 12px;
-    margin: 6px;
+    margin: 2px;
     height: 110px;
 }
