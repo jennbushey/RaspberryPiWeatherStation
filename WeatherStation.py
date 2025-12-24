@@ -68,12 +68,12 @@ def plot_hourly_graph(data, now, is_day):
     # =========================
     if is_day == "day":
         line_color = "#1b1b1b"   # Soft black (less harsh than pure black)
-        fill_color = "orange"   # Warm sun tone
+        fill_color = "#8f702e"   # Warm sun tone
         text_color = "#141a1c"
         bg_color = "#fbfbf8"   # Warm off-white
     else:
         line_color = "#eaeaea"   # Soft white
-        fill_color = "blue"   # Cool moonlight blue
+        fill_color = "#558dfc"   # Cool moonlight blue
         text_color = "#eaeaea"
         bg_color = "#080b10"   # Deep cool night
 
@@ -318,14 +318,43 @@ def make_screenshot():
 # ===============================
 # 8. Display on Inky (Pi only)
 # ===============================
+# def show_on_inky():
+#     from PIL import Image
+#     from inky.auto import auto
+
+#     inky = auto()
+
+#     img = Image.open(SCREENSHOT_PATH).convert("RGB")
+#     img = img.resize((inky.WIDTH, inky.HEIGHT))
+
+#     inky.set_image(img)
+#     inky.show()
+
 def show_on_inky():
     from PIL import Image
     from inky.auto import auto
 
     inky = auto()
 
+    target_w, target_h = inky.WIDTH, inky.HEIGHT
+
     img = Image.open(SCREENSHOT_PATH).convert("RGB")
-    img = img.resize((inky.WIDTH, inky.HEIGHT))
+    src_w, src_h = img.size
+
+    # Scale image to fill target while preserving aspect ratio
+    scale = max(target_w / src_w, target_h / src_h)
+    new_w = int(src_w * scale)
+    new_h = int(src_h * scale)
+
+    img = img.resize((new_w, new_h), Image.LANCZOS)
+
+    # Center crop
+    left = (new_w - target_w) // 2
+    top = (new_h - target_h) // 2
+    right = left + target_w
+    bottom = top + target_h
+
+    img = img.crop((left, top, right, bottom))
 
     inky.set_image(img)
     inky.show()

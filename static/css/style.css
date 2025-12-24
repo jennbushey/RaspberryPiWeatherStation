@@ -15,11 +15,11 @@ body {
 }
 
 :root {
-    --font-sm: 12px;
+    --font-sm: 14px;
     --font-md: 18px;
     --font-lg: 24px;
-    --font-xl: 32px;
-    --font-hero: 72px;
+    --font-xl: 28px;
+    --font-hero: 64px;
 }
 
 /* =========================
@@ -31,16 +31,16 @@ body.day {
     --bg: #fbfbf8;
     --card-bg: rgb(255, 255, 255);
     --text: #1b1b1b;
-    --muted: red;
-    --accent: red;
+    --muted: rgb(93, 1, 1);
+    --accent: #2c4049;
 }
 
 body.night {
     --bg: rgb(8, 11, 16);
     --card-bg: rgb(0, 0, 0);
     --text: #eaeaea;
-    --muted: blue;
-    --accent: green; /* Moonlight blue */
+    --muted: #a1a1ee;
+    --accent: #caf5ca; /* Moonlight blue */
 }
 
 /* =========================
@@ -88,7 +88,8 @@ Current Weather Layout
     width: 140px;
     height: 140px;
     image-rendering: crisp-edges;
-    filter: drop-shadow(1px 0 0 #2c4049) drop-shadow(0 1px 0 #2c4049);
+    filter: drop-shadow(1px 0 0 var(--accent))
+        drop-shadow(0 1px 0 var(--accent));
     margin-left: -12px;
     margin-right: -12px;
 }
@@ -164,8 +165,9 @@ Current Weather Layout
     width: 64px;
     height: 64px;
     image-rendering: crisp-edges;
-    filter: drop-shadow(1px 0 0 #2c4049) drop-shadow(-1px 0 0 #2c4049)
-        drop-shadow(0 1px 0 #2c4049) drop-shadow(0 -1px 0 #2c4049);
+    filter: drop-shadow(1px 0 0 var(--accent))
+        drop-shadow(-1px 0 0 var(--accent)) drop-shadow(0 1px 0 var(--accent))
+        drop-shadow(0 -1px 0 var(--accent));
 }
 
 .temps {
