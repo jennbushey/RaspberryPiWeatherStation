@@ -4,10 +4,10 @@
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial,
         sans-serif;
-    margin: 12px;
-    padding: 0;
     width: 800px;
     height: 480px;
+    margin: 0;
+    padding: 0;
     overflow: hidden;
     font-weight: 600;
     background: var(--bg);
@@ -18,7 +18,7 @@ body {
     --font-sm: 14px;
     --font-md: 18px;
     --font-lg: 24px;
-    --font-xl: 28px;
+    --font-xl: 36px;
     --font-hero: 64px;
 }
 
@@ -48,13 +48,11 @@ Main Container
 ========================= */
 
 .weather-container {
-    height: 480px;
+    margin: 24px;
     display: flex;
     flex-direction: column;
     border-radius: 8px;
     background: var(--bg);
-    padding-left: 0px;
-    padding-right: 24px;
 }
 
 /* =========================
@@ -64,8 +62,7 @@ Current Weather Layout
 .current-weather {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
-    height: 120px;
+    align-items: stretch;
 }
 
 .current-left {
@@ -75,8 +72,12 @@ Current Weather Layout
 }
 
 .current-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     text-align: right;
     max-width: 30%;
+    padding-right: 18px;
 }
 
 /* =========================
@@ -89,8 +90,8 @@ Current Weather Layout
     image-rendering: crisp-edges;
     filter: drop-shadow(1px 0 0 var(--accent))
         drop-shadow(0 1px 0 var(--accent));
-    margin-left: -12px;
-    margin-right: -12px;
+    margin-left: -16px;
+    margin-right: -16px;
 }
 
 /* =========================
@@ -144,9 +145,6 @@ Current Weather Layout
 
 .chart {
     border-radius: 6px;
-    margin-left: 6px;
-    margin-right: 6px;
-    margin-bottom: 6px;
 }
 
 /* =========================
@@ -157,20 +155,17 @@ Current Weather Layout
     display: flex;
     justify-content: center;
     margin-top: 0;
-    height: 210px;
+    /* height: 210px; */
 }
 
 .day-icon {
-    width: 72px;
-    height: 72px;
+    width: 96px;
+    height: 96px;
     image-rendering: crisp-edges;
     filter: drop-shadow(1px 0 0 var(--accent))
         drop-shadow(-1px 0 0 var(--accent)) drop-shadow(0 1px 0 var(--accent))
         drop-shadow(0 -1px 0 var(--accent));
-}
-
-.temps {
-    margin-top: 4px;
+    margin: -20px;
 }
 
 .dow {
@@ -183,13 +178,14 @@ Current Weather Layout
 
 .low {
     color: var(--muted);
+    font-size: var(--font-md);
 }
 
 .week-forecast {
     display: flex;
     width: 100%;
     text-align: center;
-    margin-top: 6px;
+    margin-top: 12px;
 }
 
 .day-card {
@@ -197,8 +193,9 @@ Current Weather Layout
     align-items: center;
     display: flex;
     flex-direction: column;
-    background-color: var(--card-bg);
+    background-color: lightblue;
+    /* background-color: var(--card-bg); */
     border-radius: 12px;
     margin: 2px;
-    height: 110px;
+    /* height: 110px; */
 }
