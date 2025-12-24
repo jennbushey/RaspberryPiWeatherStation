@@ -1,0 +1,6 @@
+requests
+pandas
+numpy
+matplotlib
+Pillow
+inky
