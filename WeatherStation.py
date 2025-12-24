@@ -80,7 +80,7 @@ def plot_hourly_graph(data, now, is_day):
         muted_color = "#2b4a7a"  # --muted
 
     font_size = 6
-    plt.figure(figsize=(3.65, 0.8), dpi=200, facecolor=bg_color)
+    plt.figure(figsize=(3.5, 0.7), dpi=200, facecolor=bg_color)
     ax = plt.gca()
     ax.set_facecolor(bg_color)
 
@@ -95,7 +95,7 @@ def plot_hourly_graph(data, now, is_day):
     if y_range == 0:
         y_range = 1
 
-    y_min = y.min() - 0.15 * y_range
+    y_min = y.min() - 0.10 * y_range
     y_max = y.max() + 0.30 * y_range
 
     plt.plot(x, y, color=line_color, linewidth=1)
