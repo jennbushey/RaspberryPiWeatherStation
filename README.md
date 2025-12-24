@@ -192,6 +192,16 @@ Frequent updates should be balanced against:
 
 ---
 
+## Shutdown
+
+To safely shut down the Pi:
+
+```bash
+sudo shutdown now
+```
+
+---
+
 ## E-Ink Design Notes
 
 -   High-contrast colors only
