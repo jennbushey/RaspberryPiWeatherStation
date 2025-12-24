@@ -1,10 +1,3 @@
-Got it — thanks for the correction 👍
-Here’s a **revised README** that accurately reflects your setup using **HTML/CSS + `wkhtmltoimage`**, _not_ Pillow.
-
-You can replace the previous one entirely with this.
-
----
-
 # Raspberry Pi Weather Station (Inky Impressions 7.3")
 
 A headless weather display built on a **Raspberry Pi** and **Pimoroni Inky Impressions 7.3" e-ink display**.
