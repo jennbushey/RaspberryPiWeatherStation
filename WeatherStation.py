@@ -67,15 +67,17 @@ def plot_hourly_graph(data, now, is_day):
     # Colors based on day/night
     # =========================
     if is_day == "day":
-        line_color = "#1b1b1b"   # Soft black (less harsh than pure black)
-        fill_color = "#8f702e"   # Warm sun tone
-        text_color = "#141a1c"
-        bg_color = "#fbfbf8"   # Warm off-white
+        bg_color = "#fbf6ea"   # --bg
+        line_color = "#1a1a1a"   # --text
+        text_color = "#1a1a1a"   # --text
+        fill_color = "#2f4f4f"   # --accent
+        muted_color = "#6b2a1f"  # --muted
     else:
-        line_color = "#eaeaea"   # Soft white
-        fill_color = "#558dfc"   # Cool moonlight blue
-        text_color = "#eaeaea"
-        bg_color = "#080b10"   # Deep cool night
+        bg_color = "#e8eef7"   # --bg
+        line_color = "#121820"   # --text
+        text_color = "#121820"   # --text
+        fill_color = "#1f5a6b"   # --accent
+        muted_color = "#2b4a7a"  # --muted
 
     font_size = 6
     plt.figure(figsize=(3.65, 0.8), dpi=200, facecolor=bg_color)
@@ -224,8 +226,8 @@ def get_weather():
                 <div class="dow">{d["DOW"]}</div>
                 <img class="day-icon" src="../static/icons/{d["ICON"]}" alt="" />
                 <div class="temps">
-                    <span class="high">H {d["HIGH"]}° </span>
-                    <span class="low">L {d["LOW"]}°</span>
+                    <div class="high">{d["HIGH"]}° </div>
+                    <div class="low">{d["LOW"]}°</div>
                 </div>
                 </div>
                 """.strip()
@@ -242,7 +244,7 @@ def get_weather():
         "DESC": WMO_CODE[code][is_day]["description"],
         "CURRENT_ICON": WMO_CODE[code][is_day]["icon"],
         "PRECIP%": data["daily"]["precipitation_probability_max"][0],
-        "TIME": f"Last updated: {time_str}",
+        "TIME": time_str,
         "DAY": day_str,
         "HIGH": round(data["daily"]["temperature_2m_max"][0]),
         "LOW": round(data["daily"]["temperature_2m_min"][0]),
