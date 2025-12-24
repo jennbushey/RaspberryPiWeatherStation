@@ -49,10 +49,9 @@ Main Container
 
 .weather-container {
     margin: 24px;
-    margin-right: 48px;
+    margin-right: 52px;
     display: flex;
     flex-direction: column;
-    border-radius: 8px;
     background: var(--bg);
 }
 
@@ -69,13 +68,13 @@ Current Weather Layout
 .current-left {
     display: flex;
     text-align: left;
-    align-items: center;
+    align-items: top;
 }
 
 .current-right {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: top;
     text-align: right;
     max-width: 33%;
     padding-right: 18px;
@@ -92,8 +91,8 @@ Current Weather Layout
     filter: drop-shadow(2px 0 0 var(--accent))
         drop-shadow(0 2px 0 var(--accent)) drop-shadow(-1px 0 0 var(--accent))
         drop-shadow(0 -1px 0 var(--accent));
-    margin-left: -16px;
-    margin-right: -20px;
+    margin-left: -12px;
+    margin-right: -16px;
 }
 
 /* =========================
@@ -110,11 +109,13 @@ Current Weather Layout
 .temp {
     font-size: var(--font-hero);
     line-height: 1;
+    padding-top: 14px;
 }
 
 .feels {
-    font-size: var(--font-md);
+    font-size: var(--font-lg);
     color: var(--muted);
+    text-align: right;
 }
 
 /* =========================
@@ -131,8 +132,10 @@ Current Weather Layout
 }
 
 .description {
-    font-size: var(--font-lg);
-    margin-top: 6px;
+    font-size: var(--font-xl);
+    font-weight: 600;
+    padding-top: 25.34px;
+    margin-bottom: 4.34px;
 }
 
 .time {
@@ -196,8 +199,6 @@ Current Weather Layout
 }
 
 .temps {
-    margin-top: 2px;
-    /* line-height: 1.05; */
 }
 
 .high {
