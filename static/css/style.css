@@ -79,7 +79,7 @@ Current Weather Layout
     flex-direction: column;
     justify-content: center;
     text-align: right;
-    max-width: 33%;
+    max-width: 40%;
     padding-right: 18px;
 }
 
