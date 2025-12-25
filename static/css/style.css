@@ -72,7 +72,7 @@ Current Weather Layout
     display: flex;
     text-align: left;
     align-items: center;
-    margin-right: -36px;
+    margin-right: -48px;
 }
 
 .current-right {
@@ -96,7 +96,7 @@ Current Weather Layout
         drop-shadow(0 2px 0 var(--accent)) drop-shadow(-1px 0 0 var(--accent))
         drop-shadow(0 -1px 0 var(--accent));
     margin-left: -12px;
-    margin-right: -16px;
+    margin-right: -12px;
 }
 
 /* =========================
