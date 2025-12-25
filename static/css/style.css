@@ -50,6 +50,7 @@ Main Container
 .weather-container {
     margin: 24px;
     margin-right: 52px;
+    margin-top: 12px;
     display: flex;
     flex-direction: column;
     background: var(--bg);

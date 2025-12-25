@@ -41,112 +41,180 @@ with open("./data/wmo_code.json") as f:
 # ===============================
 
 def plot_hourly_graph(data, now, is_day):
+    import pandas as pd
+    import matplotlib.pyplot as plt
+    import matplotlib.dates as mdates
+    from datetime import datetime
+    from zoneinfo import ZoneInfo
 
-    hourly_temps = (
-        pd.Series(data["hourly"]["temperature_2m"])
-        .round()
-        .astype(int)
+    # -------------------------
+    # Build hourly dataframe
+    # -------------------------
+    hourly_temps = pd.Series(
+        data["hourly"]["temperature_2m"]).round().astype(int)
+    hourly_precip = (
+        pd.Series(data["hourly"]["precipitation_probability"]
+                  ).round().astype(int)
     )
 
     hourly_times = data["hourly"]["time"]
     local_tz = ZoneInfo(TZ)
 
-    times = [
-        datetime.fromisoformat(t).astimezone(local_tz)
-        for t in hourly_times
-    ]
+    times = [datetime.fromisoformat(t).astimezone(local_tz)
+             for t in hourly_times]
 
-    df = pd.DataFrame(
-        {"time": times, "hourly_temps": hourly_temps}).set_index("time")
+    df = (
+        pd.DataFrame(
+            {"time": times, "hourly_temps": hourly_temps,
+                "hourly_precip": hourly_precip}
+        )
+        .set_index("time")
+        .sort_index()
+    )
 
     current_hour = now.replace(minute=0, second=0, microsecond=0)
     df = df.loc[current_hour: current_hour + pd.Timedelta(hours=12)]
-    df.index = df.index.tz_localize(None)
+    df.index = df.index.tz_localize(None)  # remove tz for Matplotlib
 
-    # =========================
+    if df.empty:
+        # Nothing to plot; avoid crashing
+        return
+
+    # -------------------------
     # Colors based on day/night
-    # =========================
+    # -------------------------
     if is_day == "day":
-        bg_color = "#fbf6ea"   # --bg
+        bg_color = "#fbf6ea"     # --bg
         line_color = "#1a1a1a"   # --text
         text_color = "#1a1a1a"   # --text
-        fill_color = "#2f4f4f"   # --accent
-        muted_color = "#6b2a1f"  # --muted
+        muted_color = "#6b2a1f"  # --muted (use for precip)
     else:
-        bg_color = "#e8eef7"   # --bg
+        bg_color = "#e8eef7"     # --bg
         line_color = "#121820"   # --text
         text_color = "#121820"   # --text
-        fill_color = "#1f5a6b"   # --accent
-        muted_color = "#2b4a7a"  # --muted
+        muted_color = "#2b4a7a"  # --muted (use for precip)
 
+    # -------------------------
+    # Figure + axes
+    # -------------------------
     font_size = 6
-    plt.figure(figsize=(3.5, 0.7), dpi=200, facecolor=bg_color)
-    ax = plt.gca()
-    ax.set_facecolor(bg_color)
+    fig = plt.figure(figsize=(3.5, 0.7), dpi=200, facecolor=bg_color)
 
-    # Plot line and fill
+    ax1 = fig.add_subplot(111)
+    ax1.set_facecolor(bg_color)
+
+    # Secondary axis for precipitation
+    ax2 = ax1.twinx()
+
+    # -------------------------
+    # Data
+    # -------------------------
     x = df.index
-    y = df["hourly_temps"]
+    y1 = df["hourly_temps"]
+    y2 = df["hourly_precip"]
 
-    # print(y)
+    # Temp y-limits (padding)
+    y1_range = int(y1.max() - y1.min())
+    if y1_range == 0:
+        y1_range = 1
+    y1_min = y1.min() - 0.10 * y1_range
+    y1_max = y1.max() + 0.30 * y1_range
 
-    y_range = y.max() - y.min()
+    # -------------------------
+    # Plot lines (NO fill_between)
+    # -------------------------
+    ax1.plot(x, y1, color=line_color, linewidth=1)
 
-    if y_range == 0:
-        y_range = 1
+    ax2.plot(
+        x,
+        y2,
+        color=muted_color,
+        linewidth=0.8,
+        linestyle="--",
+    )
+    ax2.set_ylim(0, 100)
 
-    y_min = y.min() - 0.10 * y_range
-    y_max = y.max() + 0.30 * y_range
+    # -------------------------
+    # X-axis formatting
+    # -------------------------
+    ax1.xaxis.set_major_locator(mdates.HourLocator(interval=2))
+    ax1.xaxis.set_major_formatter(mdates.DateFormatter("%-I %p"))
 
-    plt.plot(x, y, color=line_color, linewidth=1)
-    plt.fill_between(x, y, alpha=0.25, color=fill_color)
+    # Apply y-limits
+    ax1.set_ylim(y1_min, y1_max)
 
-    ax.xaxis.set_major_locator(mdates.HourLocator(interval=2))
-    ax.xaxis.set_major_formatter(mdates.DateFormatter("%-I %p"))
-
-    plt.ylim(y_min, y_max)
-
-    # Annotate each point
+    # -------------------------
+    # Annotations
+    # -------------------------
+    # Temps: annotate only when value changes
     prev = None
-    for xi, yi in zip(x, y):
-        alpha = 0 if yi == prev else 1.0
+    for xi, yi in zip(x, y1):
+        alpha = 0.0 if yi == prev else 1.0
         prev = yi
-        plt.annotate(
+        ax1.annotate(
             f"{yi}°",
             (xi, yi),
             textcoords="offset points",
             xytext=(0, 6),
             ha="center",
             fontsize=font_size,
-            fontweight='bold',
+            fontweight="bold",
             color=text_color,
             alpha=alpha,
         )
 
-    plt.xticks(color=text_color)
-    ax.tick_params(axis="y", which="both", left=False, labelleft=False)
-    for label in ax.get_xticklabels():
+    # Precip: annotate only when notable
+    for xi, pi in zip(x, y2):
+        if pi >= 30:
+            ax2.annotate(
+                f"{pi}%",
+                (xi, pi),
+                textcoords="offset points",
+                xytext=(0, -6),
+                ha="center",
+                fontsize=font_size,
+                color=text_color,
+            )
+
+    # -------------------------
+    # Styling
+    # -------------------------
+    ax1.tick_params(axis="y", which="both", left=False, labelleft=False)
+
+    ax1.tick_params(
+        axis="x",
+        pad=0,
+        colors=text_color,
+        bottom=False,
+        labelsize=font_size,
+    )
+
+    for label in ax1.get_xticklabels():
         label.set_fontweight("normal")
 
-    plt.grid(axis="y", linestyle="", alpha=0.5, color=text_color)
-
-    # Make the line/fill touch the left/right edges of the plotting area
-    ax.set_xlim(x.min(), x.max())
-    ax.margins(x=0)
-
-    # Put x tick labels "outside" by reserving bottom space manually
-    plt.subplots_adjust(left=0.04, right=0.96, top=0.95, bottom=0.15)
-
-    # Push tick labels further down (outside the plot area)
-    ax.tick_params(axis="x", pad=0, colors=text_color,
-                   bottom=False, labelsize=font_size)
-
-    for spine in ax.spines.values():
+    # Hide secondary axis visuals (but keep its line)
+    ax2.tick_params(axis="y", right=False, labelright=False)
+    for spine in ax2.spines.values():
         spine.set_visible(False)
 
+    # Hide primary spines too
+    for spine in ax1.spines.values():
+        spine.set_visible(False)
+
+    # Grid (optional; currently effectively "off" because linestyle="")
+    ax1.grid(axis="y", linestyle="", alpha=0.5, color=text_color)
+
+    # Make the line touch left/right edges
+    ax1.set_xlim(x.min(), x.max())
+    ax1.margins(x=0)
+
+    # Layout tuning for your small render area
+    plt.subplots_adjust(left=0.04, right=0.96, top=0.95, bottom=0.15)
+
+    # Save
     plt.savefig(GRAPH_PATH, transparent=True,
                 bbox_inches="tight", pad_inches=0)
-    plt.close()
+    plt.close(fig)
 
 
 # ===============================
