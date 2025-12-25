@@ -98,7 +98,7 @@ def plot_hourly_graph(data, now, is_day):
     # Figure + axes
     # -------------------------
     font_size = 6
-    fig = plt.figure(figsize=(3.5, 0.7), dpi=200, facecolor=bg_color)
+    fig = plt.figure(figsize=(3.5, 0.8), dpi=200, facecolor=bg_color)
 
     ax1 = fig.add_subplot(111)
     ax1.set_facecolor(bg_color)
