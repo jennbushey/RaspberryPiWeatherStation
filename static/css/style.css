@@ -80,7 +80,7 @@ Current Weather Layout
     flex-direction: column;
     justify-content: center;
     text-align: right;
-    max-width: 37%;
+    max-width: 35%;
     padding-right: 18px;
 }
 
@@ -95,7 +95,7 @@ Current Weather Layout
     filter: drop-shadow(2px 0 0 var(--accent))
         drop-shadow(0 2px 0 var(--accent)) drop-shadow(-1px 0 0 var(--accent))
         drop-shadow(0 -1px 0 var(--accent));
-    margin-left: -12px;
+    margin-left: -16px;
     margin-right: -8px;
 }
 
