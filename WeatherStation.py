@@ -215,6 +215,7 @@ def get_weather():
             "HIGH": round(data["daily"]["temperature_2m_max"][i]),
             "LOW": round(data["daily"]["temperature_2m_min"][i]),
             "ICON": WMO_CODE[str(data["daily"]["weather_code"][i])]["day"]["icon"],
+            "PRECIP": round(data["daily"]["precipitation_probability_max"][i]),
         })
 
     def build_week_cards_html(week):
@@ -228,6 +229,7 @@ def get_weather():
                 <div class="temps">
                     <div class="high">{d["HIGH"]}° </div>
                     <div class="low">{d["LOW"]}°</div>
+                    <div class="precip">{d["PRECIP"]}%</div>
                 </div>
                 </div>
                 """.strip()
@@ -248,6 +250,7 @@ def get_weather():
         "DAY": day_str,
         "HIGH": round(data["daily"]["temperature_2m_max"][0]),
         "LOW": round(data["daily"]["temperature_2m_min"][0]),
+        "PRECIP": round(data["daily"]["precipitation_probability_max"][0]),
         "MODE": is_day,
         "WEEK_CARDS": week_cards_html,
     }

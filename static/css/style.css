@@ -119,6 +119,11 @@ Current Weather Layout
     color: var(--muted);
     text-align: right;
 }
+.precip-main {
+    font-size: var(--font-lg);
+    color: var(--muted);
+    text-align: right;
+}
 
 /* =========================
    Text Elements
@@ -171,7 +176,7 @@ Current Weather Layout
     filter: drop-shadow(1px 0 0 var(--accent))
         drop-shadow(-1px 0 0 var(--accent)) drop-shadow(0 1px 0 var(--accent))
         drop-shadow(0 -1px 0 var(--accent));
-    margin: -6px;
+    margin: -12px;
 }
 
 .week-forecast {
@@ -205,6 +210,10 @@ Current Weather Layout
 
 .high {
     font-size: var(--font-md);
+    font-weight: 600;
+}
+.precip {
+    font-size: var(--font-sm);
     font-weight: 600;
 }
 
